@@ -127,26 +127,24 @@ class Favorite(models.Model):
         ]
 
 
-class Follow(models.Model):
+class Cart(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='follower',
-        verbose_name='Подписчик',
+        related_name='cart',
+        verbose_name='Пользователь',
     )
-    author = models.ForeignKey(
-        User,
+    recipe = models.ForeignKey(
+        Recipe,
         on_delete=models.CASCADE,
-        related_name='following',
-        verbose_name='Автор',
+        related_name='cart',
+        verbose_name='Рецепт',
     )
 
     class Meta:
         ordering = ['-id']
-        verbose_name = 'Подписка'
+        verbose_name = 'Корзина'
         constraints = [
-            models.UniqueConstraint(
-                fields=['user', 'author'],
-                name='unique follow',
-            )
+            models.UniqueConstraint(fields=['user', 'recipe'],
+                                    name='unique cart user')
         ]
