@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.db.models import Exists, OuterRef
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -10,10 +11,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .filters import AuthorAndTagFilter, IngredientSearchFilter
-from recipes.models import *
+from recipes.models import Tag, Ingredient, IngredientAmount, Recipe, Favorite, Cart
 from .pagination import LimitPageNumberPagination
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from .serializers import *
+from .serializers import TagSerializer, IngredientSerializer, RecipeSerializer, CropRecipeSerializer
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
@@ -36,6 +37,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
     pagination_class = LimitPageNumberPagination
     filter_class = AuthorAndTagFilter
     permission_classes = [IsOwnerOrReadOnly]
+
+    def get_queryset(self):
+        is_favourite_qs = Recipe.objects.filter(favourites__user=self.request.user,
+                                                id=OuterRef('id'))
+        is_in_shopping_cart = Recipe.objects.filter(cart__user=self.request.user, id=OuterRef('id'))
+        return self.queryset.annotate(is_favourited=Exists(is_favourite_qs), is_in_shopping_cart=Exists(is_in_shopping_cart))
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
