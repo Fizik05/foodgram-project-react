@@ -1,6 +1,8 @@
+from django.db.models import Exists, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.db.models import Exists, OuterRef
+from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
+                            Recipe, Tag)
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -11,22 +13,10 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .filters import AuthorAndTagFilter, IngredientSearchFilter
-from recipes.models import (
-    Tag,
-    Ingredient,
-    IngredientAmount,
-    Recipe,
-    Favorite,
-    Cart,
-)
 from .pagination import LimitPageNumberPagination
 from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
-from .serializers import (
-    TagSerializer,
-    IngredientSerializer,
-    RecipeSerializer,
-    CropRecipeSerializer,
-)
+from .serializers import (CropRecipeSerializer, IngredientSerializer,
+                          RecipeSerializer, TagSerializer)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
