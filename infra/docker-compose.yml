@@ -6,14 +6,13 @@ services:
       - /var/lib/postgresql/data/
     env_file:
       - ./.env
-    ports:
-      - "5432:5432"
 
   backend:
-    image: fizik05/foodgram:v1.0.1
+    image:
+      fizik05/foodgram:v1.0.1
     restart: always
     volumes:
-      - static_value:/code/static/
+      - static_value:/code/staticfiles/
       - media_value:/code/media/
     depends_on:
       - db
@@ -21,11 +20,10 @@ services:
       - ./.env
 
   frontend:
-    image: fizik05/foodgram-front:v1.0.0
+    image:
+      fizik05/foodgram-front:v1.0.0
     volumes:
       - ../frontend/:/app/result_build/
-    depends_on:
-      - db
 
   nginx:
     image: nginx:1.19.3
@@ -41,6 +39,5 @@ services:
       - backend
 
 volumes:
-  postgres_data:
   static_value:
   media_value:

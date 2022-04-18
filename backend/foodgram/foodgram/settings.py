@@ -73,10 +73,10 @@ DATABASES = {
         "ENGINE": os.getenv(
             "DB_ENGINE", default="django.db.backends.postgresql"
         ),
-        "NAME": os.getenv("DB_NAME", default="foodgrampython:v2.0"),
+        "NAME": os.getenv("DB_NAME", default="foodgrampython:v3.0"),
         "USER": os.getenv("POSTGRES_USER", default="postgres"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", default="14012005"),
-        "HOST": os.getenv("DB_HOST", default="127.0.0.1"),
+        "HOST": os.getenv("DB_HOST", "localhost"),
         "PORT": os.getenv("DB_PORT", default="5432"),
     }
 }
@@ -115,10 +115,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 REST_FRAMEWORK = {
-    "DEFAULT_PAGINATION_CLASS": (
-        "rest_framework.pagination." "PageNumberPagination"
-    ),
-    "PAGE_SIZE": 5,
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.AllowAny",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",

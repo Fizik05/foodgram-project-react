@@ -1,4 +1,3 @@
-from django.db.models import Exists, OuterRef
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from recipes.models import (Cart, Favorite, Ingredient, IngredientAmount,
@@ -14,7 +13,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 from .filters import AuthorAndTagFilter, IngredientSearchFilter
 from .pagination import LimitPageNumberPagination
-from .permissions import IsAdminOrReadOnly, IsOwnerOrReadOnly
+from .permissions import IsAdminOrReadOnly
 from .serializers import (CropRecipeSerializer, IngredientSerializer,
                           RecipeSerializer, TagSerializer)
 
@@ -38,30 +37,18 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = LimitPageNumberPagination
     filter_class = AuthorAndTagFilter
-    permission_classes = [IsOwnerOrReadOnly]
-
-    def get_queryset(self):
-        is_favourite_qs = Recipe.objects.filter(
-            favourites__user=self.request.user, id=OuterRef("id")
-        )
-        is_in_shopping_cart = Recipe.objects.filter(
-            cart__user=self.request.user, id=OuterRef("id")
-        )
-        return self.queryset.annotate(
-            is_favourited=Exists(is_favourite_qs),
-            is_in_shopping_cart=Exists(is_in_shopping_cart),
-        )
+    permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
 
     @action(
         detail=True,
-        methods=["get", "delete"],
+        methods=["get", "post", "delete"],
         permission_classes=[IsAuthenticated],
     )
     def favorite(self, request, pk=None):
-        if request.method == "GET":
+        if request.method == "POST":
             return self.add_obj(Favorite, request.user, pk)
         elif request.method == "DELETE":
             return self.delete_obj(Favorite, request.user, pk)
@@ -69,11 +56,11 @@ class RecipeViewSet(viewsets.ModelViewSet):
 
     @action(
         detail=True,
-        methods=["get", "delete"],
+        methods=["post", "delete"],
         permission_classes=[IsAuthenticated],
     )
     def shopping_cart(self, request, pk=None):
-        if request.method == "GET":
+        if request.method == "POST":
             return self.add_obj(Cart, request.user, pk)
         elif request.method == "DELETE":
             return self.delete_obj(Cart, request.user, pk)
