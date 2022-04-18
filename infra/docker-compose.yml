@@ -9,7 +9,7 @@ services:
 
   backend:
     image:
-      fizik05/foodgram:v1.0.1
+      fizik05/foodgram:v1.0.2
     restart: always
     volumes:
       - static_value:/code/staticfiles/
