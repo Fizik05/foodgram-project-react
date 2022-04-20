@@ -16,8 +16,8 @@ services:
       - ../docs/:/usr/share/nginx/html/api/docs/
       - static_value:/var/html/staticfiles/
       - media_value:/var/html/media/
-#    depends_on:
-#      - backend
+    depends_on:
+      - frontend
   db:
     image: postgres:13.0-alpine
     ports:
