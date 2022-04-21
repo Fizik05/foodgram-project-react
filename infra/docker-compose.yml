@@ -2,7 +2,7 @@ version: '3.3'
 services:
 
   frontend:
-    image: fizik05/foodgram-front
+    image: fizik05/foodgram-front:v1.0.0
     volumes:
       - ../frontend/:/app/result_build/
 
@@ -27,7 +27,7 @@ services:
       - ./.env
 
   backend:
-    image: fizik05/foodgram
+    image: fizik05/foodgram:latest
     restart: always
     volumes:
       - static_value:/code/staticfiles/
