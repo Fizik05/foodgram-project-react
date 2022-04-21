@@ -27,7 +27,7 @@ services:
       - ./.env
 
   backend:
-    image: fizik05/foodgram:v1.0.4
+    image: fizik05/foodgram:v1.0.5
     restart: always
     volumes:
       - static_value:/code/staticfiles/
