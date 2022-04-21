@@ -83,8 +83,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 }
             else:
                 final_list[name]['amount'] += item[2]
-        pdfmetrics.registerFont(
-            TTFont('FreeSans', 'media/fonts/FreeSans.ttf'))
+        #pdfmetrics.registerFont(
+        #    TTFont('FreeSans', 'media/fonts/FreeSans.ttf'))
         response = HttpResponse(content_type='application/pdf')
         response['Content-Disposition'] = ('attachment; '
                                            'filename="shopping_list.pdf"')
