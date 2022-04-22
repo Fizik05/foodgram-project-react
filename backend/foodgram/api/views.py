@@ -7,7 +7,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
 
@@ -37,7 +37,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     pagination_class = LimitPageNumberPagination
     filter_class = AuthorAndTagFilter
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -82,7 +82,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
             for i, (name, data) in enumerate(data_dic.items(), 1):
                 page.drawString(
                     75, height,
-                    (f'{i}. {name} - {data["amount"]}, '
+                    (f'{i}. {name} - {data["amount"]} '
                      f'{data["measurement_unit"]}'))
                 height -= 25
             page.showPage()
