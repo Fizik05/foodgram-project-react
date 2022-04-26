@@ -27,11 +27,11 @@ services:
       - ./.env
 
   backend:
-    image: fizik05/foodgram:latest
+    image: fizik05/foodgram:v1.0.6
     restart: always
     volumes:
-      - static_value:/code/staticfiles/
-      - media_value:/code/media/
+      - static_value:/app/staticfiles/
+      - media_value:/app/media/
     depends_on:
       - db
     env_file:
