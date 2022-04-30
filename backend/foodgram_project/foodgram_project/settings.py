@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'k!nly@3gs3a(*$ljr2w(xt#cgm5v=56roz5k541nd4uxxonsyx'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,9 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'django_extensions',
+    'rest_framework',
     'djoser',
     'rest_framework.authtoken',
-    'rest_framework',
     'recipes',
     'users',
 ]
