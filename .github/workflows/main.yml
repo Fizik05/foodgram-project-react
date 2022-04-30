@@ -42,7 +42,7 @@ jobs:
         with:
           context: backend/foodgram_project/
           push: true
-          tags: fizik05/foodgram:latest
+          tags: fizik05/foodgram-project
 
   deploy:
     if: contains('refs/heads/master refs/heads/main', github.ref)
